@@ -88,7 +88,27 @@ local function go_to_origin_not_y()
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
-    if facingForward then
+    if not facingForward then
+        if direction.x > 0 then
+            for i = 1, direction.x do
+                turtle.forward()
+            end
+        elseif direction.x < 0 then
+            for i = 1, direction.x do
+                turtle.back()
+            end
+        end
+
+        if direction.z > 0 then
+            for i = 1, direction.z do
+                turtle.right()
+            end
+        elseif direction.z < 0 then
+            for i = 1, direction.z do
+                turtle.left()
+            end
+        end
+    elseif facingForward then
         if direction.x < 0 then
             for i = 1, direction.x do
                 turtle.forward()
