@@ -32,7 +32,7 @@ end
 
 local function go_to_origin()
     -- Get the direction to the origin using vector math
-    local current = gps.locate(5)
+    local current = vector.new(gps.locate(5))
     local origin = vector.new(originX, originY, originZ)
     local direction = vector.new(current.x - origin.x, current.y - origin.y, current.z - origin.z)
     direction = direction.round()
@@ -87,7 +87,7 @@ end
 
 local function go_to_origin_not_y()
     -- Get the direction to the origin using vector math
-    local current = gps.locate(5)
+    local current = vector.new(gps.locate(5))
     local origin = vector.new(originX, originY, originZ)
     local direction = vector.new(current.x - origin.x, current.y - origin.y, current.z - origin.z)
     direction = direction.round()
