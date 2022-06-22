@@ -31,7 +31,7 @@ end
 
 local function removeTurtle(id)
     for i, turtle in ipairs(turtles) do
-        if turtle.id == id then
+        if turtle == id then
             table.remove(turtles, i)
             return
         end

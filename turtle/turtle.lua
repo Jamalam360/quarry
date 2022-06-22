@@ -181,10 +181,10 @@ local function network_loop()
             trash = packet.data
         elseif packet.type == "master_failure" then
             go_to_origin()
-            os.shutdown()
+            return
         elseif packet.type == "shutdown" then
             writeInfo()
-            os.shutdown()
+            return
         end
     end
 end
