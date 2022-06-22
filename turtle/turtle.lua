@@ -30,14 +30,10 @@ local function writeInfo()
     file.close()
 end
 
-local function roundVector(v)
-    return vector.new(math.floor(v.x + 0.5), math.floor(v.y + 0.5), math.floor(v.z + 0.5))
-end
-
 local function go_to_origin()
-    local current = roundVector(vector.new(gps.locate(5)))
-    local target = roundVector(vector.new(originX, originY, originZ))
-    local direction = target.sub(current)
+    local current = vector.new(gps.locate(5)).round()
+    local target = vector.new(originX, originY, originZ).round()
+    local direction = target.sub(current).round()
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
@@ -75,7 +71,7 @@ local function go_to_origin()
         facingForward = true
     end
 
-    local finalX, finalY, finalZ = roundVector(gps.locate(5))
+    local finalX, finalY, finalZ = gps.locate(5).round()
 
     if finalX ~= originX or finalY ~= originY or finalZ ~= originZ then
         rednet.send(master, "failed_to_go_to_origin")
@@ -88,9 +84,9 @@ local function go_to_origin()
 end
 
 local function go_to_origin_not_y()
-    local current = roundVector(vector.new(gps.locate(5)))
-    local target = roundVector(vector.new(originX, originY, originZ))
-    local direction = target.sub(current)
+    local current = vector.new(gps.locate(5)).round()
+    local target = vector.new(originX, originY, originZ).round()
+    local direction = target.sub(current).round()
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
@@ -142,10 +138,12 @@ local function go_to_origin_not_y()
         facingForward = true
     end
 
-    local finalX, finalY, finalZ = roundVector(gps.locate(5))
+    local finalX, finalY, finalZ = gps.locate(5).round()
 
     if finalX ~= originX or finalY ~= originY or finalZ ~= originZ then
         rednet.send(master, "failed_to_go_to_origin")
+        print("Origin: " .. originX .. "," .. originY .. "," .. originZ)
+        print("Final: " .. finalX .. "," .. finalY .. "," .. finalZ)
         return
     else
         rednet.send(master, "arrived_at_origin")
