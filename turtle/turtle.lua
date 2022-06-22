@@ -32,11 +32,10 @@ end
 
 local function go_to_origin()
     -- Get the direction to the origin using vector math
-    local direction = {
-        x = originX - gps.locate(5).round().x,
-        y = originY - gps.locate(5).round().y,
-        z = originZ - gps.locate(5).round().z
-    }
+    local current = gps.locate(5)
+    local origin = vector.new(originX, originY, originZ)
+    local direction = vector.new(current.x - origin.x, current.y - origin.y, current.z - origin.z)
+    direction = direction.round()
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
@@ -88,11 +87,10 @@ end
 
 local function go_to_origin_not_y()
     -- Get the direction to the origin using vector math
-    local direction = {
-        x = originX - gps.locate(5).round().x,
-        y = originY - gps.locate(5).round().y,
-        z = originZ - gps.locate(5).round().z
-    }
+    local current = gps.locate(5)
+    local origin = vector.new(originX, originY, originZ)
+    local direction = vector.new(current.x - origin.x, current.y - origin.y, current.z - origin.z)
+    direction = direction.round()
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
