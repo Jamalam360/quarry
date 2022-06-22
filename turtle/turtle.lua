@@ -37,7 +37,7 @@ end
 local function go_to_origin()
     local current = roundVector(vector.new(gps.locate(5)))
     local target = roundVector(vector.new(originX, originY, originZ))
-    local direction = roundVector(target - current)
+    local direction = target.sub(current)
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
@@ -90,7 +90,7 @@ end
 local function go_to_origin_not_y()
     local current = roundVector(vector.new(gps.locate(5)))
     local target = roundVector(vector.new(originX, originY, originZ))
-    local direction = roundVector(target - current)
+    local direction = target.sub(current)
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
