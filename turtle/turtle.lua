@@ -31,9 +31,9 @@ local function writeInfo()
 end
 
 local function go_to_origin()
-    local current = vector.new(gps.locate(5))
-    local target = vector.new(x, y, z)
-    local direction = target - current
+    local current = roundVector(vector.new(gps.locate(5)))
+    local target = roundVector(vector.new(originX, originY, originZ))
+    local direction = roundVector(target - current)
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
@@ -71,7 +71,7 @@ local function go_to_origin()
         facingForward = true
     end
 
-    local finalX, finalY, finalZ = gps.locate(5)
+    local finalX, finalY, finalZ = roundVector(gps.locate(5))
 
     if finalX ~= originX or finalY ~= originY or finalZ ~= originZ then
         rednet.send(master, "failed_to_go_to_origin")
@@ -83,10 +83,14 @@ local function go_to_origin()
     end
 end
 
+local function roundVector(v)
+    return vector.new(math.floor(v.x + 0.5), math.floor(v.y + 0.5), math.floor(v.z + 0.5))
+end
+
 local function go_to_origin_not_y()
-    local current = vector.new(gps.locate(5))
-    local target = vector.new(x, y, z)
-    local direction = target - current
+    local current = roundVector(vector.new(gps.locate(5)))
+    local target = roundVector(vector.new(originX, originY, originZ))
+    local direction = roundVector(target - current)
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
@@ -138,7 +142,7 @@ local function go_to_origin_not_y()
         facingForward = true
     end
 
-    local finalX, finalY, finalZ = gps.locate(5)
+    local finalX, finalY, finalZ = roundVector(gps.locate(5))
 
     if finalX ~= originX or finalY ~= originY or finalZ ~= originZ then
         rednet.send(master, "failed_to_go_to_origin")
@@ -183,6 +187,7 @@ local function network_loop()
             go_to_origin()
             return
         elseif packet.type == "shutdown" then
+            print("Shutting down.")
             writeInfo()
             return
         end
