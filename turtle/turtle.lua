@@ -33,9 +33,12 @@ end
 local function go_to_origin()
     -- Get the direction to the origin using vector math
     local current = vector.new(gps.locate(5))
+    print("Current: " .. current.x .. "," .. current.y .. "," .. current.z)
     local origin = vector.new(originX, originY, originZ)
+    print("Origin: " .. origin.x .. "," .. origin.y .. "," .. origin.z)
     local direction = vector.new(current.x - origin.x, current.y - origin.y, current.z - origin.z)
     direction = direction.round()
+    print("Direction: " .. direction.x .. "," .. direction.y .. "," .. direction.z)
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
