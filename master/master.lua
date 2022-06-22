@@ -4,6 +4,10 @@ os.loadAPI("output")
 local trash = trash_list.read()
 local turtles = {}
 
+function log(msg) 
+    output.log(msg)
+end
+
 local function handleFailure(msg)
     output.error(msg)
 
