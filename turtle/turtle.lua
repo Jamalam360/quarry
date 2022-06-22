@@ -197,10 +197,10 @@ local function mining_loop()
         if turtle.getFuelLevel() == 0 then
             rednet.send(master, "try_refuel")
 
-            if selectItem("minecraft:coal") then
+            if inventory.selectItem("minecraft:coal") then
                 turtle.refuel(turtle.getItemCount())
                 rednet.send(master, "refuel_success")
-            elseif selectItem("minecraft:charcoal") then
+            elseif inventory.selectItem("minecraft:charcoal") then
                 turtle.refuel(turtle.getItemCount())
                 rednet.send(master, "refuel_success")
             else
@@ -209,11 +209,11 @@ local function mining_loop()
             end
         end
 
-        if isInventoryFull() then
-            stackItems()
-            dropTrash(trash)
+        if inventory.isInventoryFull() then
+            inventory.stackItems()
+            inventory.dropTrash(trash)
 
-            if isInventoryFull() then
+            if inventory.isInventoryFull() then
                 rednet.send(master, "inventory_full")
                 go_to_origin()
 
