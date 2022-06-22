@@ -5,19 +5,19 @@ local files = {
 }
 
 for name, url in pairs(files) do
-    if fs.exists(name .. ".lua") then
-        fs.delete(name .. ".lua")
+    if fs.exists(name) then
+        fs.delete(name)
     end
 
-    print("Downloading " .. name .. ".lua")
+    print("Downloading " .. name)
 
-    local file = fs.open(name .. ".lua", "w")
+    local file = fs.open(name, "w")
     local response = http.get(url)
     if response then
         file.write(response.readAll())
         response.close()
         file.close()
     else
-        print("Failed to download " .. name .. ".lua")
+        print("Failed to download " .. name)
     end
 end
