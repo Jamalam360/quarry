@@ -146,9 +146,19 @@ local function go_to_origin_not_y()
     end
 end
 
+function splitString(str, delimiter)
+    local result = {}
+    local i = 0
+    for match in (str..delimiter):gmatch("(.-)"..delimiter) do
+        i = i + 1
+        result[i] = match
+    end
+    return result
+end
+
 function get_packet_info(packet)
     local info = {}
-    local packet_info = string.split(packet, " : ")
+    local packet_info = splitString(packet, " : ")
     info.type = packet_info[1]
     info.data = packet_info[2]
     return info
@@ -282,12 +292,7 @@ end
 
 rednet.send(master, "request_trash_list")
 _, msg = rednet.receive()
-
-local t = {}
-for str in string.gmatch(msg, "([^" .. "," .. "]+)") do
-    table.insert(t, str)
-end
-trash = t
+trash = splitString(msg, ",")
 
 go_to_origin()
 
