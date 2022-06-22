@@ -270,12 +270,22 @@ local function mining_loop()
             progress = progress + 1
         elseif progress > 16 then
             if rowsDone ~= 16 then
-                turtle.turnRight()
-                turtle.dig()
-                turtle.forward()
-                turtle.turnRight()
-                turtle.digUp()
-                turtle.digDown()
+                if facingForward then
+                    turtle.turnRight()
+                    turtle.dig()
+                    turtle.forward()
+                    turtle.turnRight()
+                    turtle.digUp()
+                    turtle.digDown()
+                else
+                    turtle.turnLeft()
+                    turtle.dig()
+                    turtle.forward()
+                    turtle.turnLeft()
+                    turtle.digUp()
+                    turtle.digDown()
+                end
+                
                 progress = 1
                 facingForward = not facingForward
                 rowsDone = rowsDone + 1
