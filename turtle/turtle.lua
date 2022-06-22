@@ -74,10 +74,12 @@ local function go_to_origin()
     local finalX, finalY, finalZ = gps.locate(5)
 
     if finalX ~= originX or finalY ~= originY or finalZ ~= originZ then
-        rednet.send(id, "failed_to_go_to_origin")
+        rednet.send(master, "failed_to_go_to_origin")
+        print("Origin: " .. originX .. "," .. originY .. "," .. originZ)
+        print("Final: " .. finalX .. "," .. finalY .. "," .. finalZ)
         return
     else
-        rednet.send(id, "arrived_at_origin")
+        rednet.send(master, "arrived_at_origin")
     end
 end
 
@@ -139,10 +141,10 @@ local function go_to_origin_not_y()
     local finalX, finalY, finalZ = gps.locate(5)
 
     if finalX ~= originX or finalY ~= originY or finalZ ~= originZ then
-        rednet.send(id, "failed_to_go_to_origin")
+        rednet.send(master, "failed_to_go_to_origin")
         return
     else
-        rednet.send(id, "arrived_at_origin")
+        rednet.send(master, "arrived_at_origin")
     end
 end
 
@@ -174,7 +176,7 @@ local function network_loop()
         local packet = get_packet_info(message)
 
         if packet.type == "update_trash_list" then
-            rednet.send(id, "request_trash_list")
+            rednet.send(master, "request_trash_list")
         elseif packet.type == "request_trash_list_response" then
             trash = packet.data
         elseif packet.type == "master_failure" then
