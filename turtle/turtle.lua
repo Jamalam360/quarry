@@ -249,8 +249,16 @@ local function mining_loop()
 end
 
 rednet.broadcast("initial_handshake")
-local id = rednet.receive()
-master = id
+
+while true do 
+    local _, id, message = os.pullEvent("rednet_message")
+    local packet = get_packet_info(message)
+
+    if packet.type == "initial_handshake_response" then
+        master = id
+        break
+    end
+end
 
 rednet.send(master, "request_trash_list")
 _, msg = rednet.receive()
@@ -260,7 +268,6 @@ for str in string.gmatch(msg, "([^" .. "," .. "]+)") do
     table.insert(t, str)
 end
 trash = t
-
 
 go_to_origin()
 
