@@ -31,55 +31,67 @@ local function writeInfo()
 end
 
 local function go_to_origin()
-    -- Get the direction to the origin using vector math
-    local current = vector.new(gps.locate(5))
-    local origin = vector.new(originX, originY, originZ)
+    -- Get the current position
+    local x, y, z = gps.locate(5)
 
-    if current.x == origin.x and current.y == origin.y and current.z == origin.z then
+    -- Find the vector between the current position and the origin
+    local dx = originX - x
+    local dy = originY - y
+    local dz = originZ - z
+
+    -- If the vector is zero, we're done
+    if dx == 0 and dy == 0 and dz == 0 then
         rednet.send(master, "arrived_at_origin")
-        return
+        return true
     end
 
-    local direction = vector.new(current.x - origin.x, current.y - origin.y, current.z - origin.z)
-    direction = direction.round()
-
-    -- Move to the target using direction.x, direction.y, direction.z
-    -- Forward is towards negative X
-    if facingForward then
-        if direction.x < 0 then
-            for i = 1, direction.x do
-                turtle.forward()
-            end
-        elseif direction.x > 0 then
-            for i = 1, direction.x do
-                turtle.back()
-            end
-        end
-
-        if direction.z < 0 then
-            for i = 1, direction.z do
-                turtle.right()
-            end
-        elseif direction.z > 0 then
-            for i = 1, direction.z do
-                turtle.left()
-            end
+    -- Move in the direction of the vector
+    -- Forwards is towards negative x, backwards is towards positive x
+    while dX ~= 0 do
+        if facingForward and dX > 0 then
+            turtle.forward()
+            dX = dX - 1
+        elseif facingForward and dX < 0 then
+            turtle.back()
+            dX = dX + 1
+        elseif not facingForward and dX > 0 then
+            turtle.back()
+            dX = dX - 1
+        elseif not facingForward and dX < 0 then
+            turtle.forward()
+            dX = dX + 1
         end
     end
 
-    if direction.y < 0 then
-        for i = 1, direction.y do
+    -- When facing forwards, left is towards positive Z, right is towards negative Z
+    -- When facing backwards, left is towards negative Z, right is towards positive Z
+    while dZ ~= 0 do
+        if facingForward and dZ > 0 then
+            turtle.left()
+            dZ = dZ - 1
+        elseif facingForward and dZ < 0 then
+            turtle.right()
+            dZ = dZ + 1
+        elseif not facingForward and dZ > 0 then
+            turtle.right()
+            dZ = dZ - 1
+        elseif not facingForward and dZ < 0 then
+            turtle.left()
+            dZ = dZ + 1
+        end
+    end
+
+    while dY ~= 0 do
+        if dY > 0 then
             turtle.up()
+            dY = dY - 1
+        else
+            turtle.down()
+            dY = dY + 1
         end
     end
 
-    if not facingForward then
-        turtle.turnLeft()
-        turtle.turnLeft()
-        facingForward = true
-    end
-
-    local finalX, finalY, finalZ = gps.locate(5).round()
+    local finalX, finalY, finalZ = gps.locate(5)
 
     if finalX ~= originX or finalY ~= originY or finalZ ~= originZ then
         rednet.send(master, "failed_to_go_to_origin")
@@ -88,74 +100,60 @@ local function go_to_origin()
     end
 end
 
-local function go_to_origin_not_y()
-    -- Get the direction to the origin using vector math
-    local current = vector.new(gps.locate(5))
-    local origin = vector.new(originX, originY, originZ)
+local function go_to_origin_ignoring_y()
+    -- Get the current position
+    local x, _, z = gps.locate(5)
 
-    if current.x == origin.x and current.y == origin.y and current.z == origin.z then
+    -- Find the vector between the current position and the origin
+    local dx = originX - x
+    local dz = originZ - z
+
+    -- If the vector is zero, we're done
+    if dx == 0 and dz == 0 then
         rednet.send(master, "arrived_at_origin")
-        return
+        return true
     end
 
-    local direction = vector.new(current.x - origin.x, current.y - origin.y, current.z - origin.z)
-    direction = direction.round()
-
-    -- Move to the target using direction.x, direction.y, direction.z
-    -- Forward is towards negative X
-    if not facingForward then
-        if direction.x > 0 then
-            for i = 1, direction.x do
-                turtle.forward()
-            end
-        elseif direction.x < 0 then
-            for i = 1, direction.x do
-                turtle.back()
-            end
-        end
-
-        if direction.z > 0 then
-            for i = 1, direction.z do
-                turtle.right()
-            end
-        elseif direction.z < 0 then
-            for i = 1, direction.z do
-                turtle.left()
-            end
-        end
-    elseif facingForward then
-        if direction.x < 0 then
-            for i = 1, direction.x do
-                turtle.forward()
-            end
-        elseif direction.x > 0 then
-            for i = 1, direction.x do
-                turtle.back()
-            end
-        end
-
-        if direction.z < 0 then
-            for i = 1, direction.z do
-                turtle.right()
-            end
-        elseif direction.z > 0 then
-            for i = 1, direction.z do
-                turtle.left()
-            end
+    -- Move in the direction of the vector
+    -- Forwards is towards negative x, backwards is towards positive x
+    while dX ~= 0 do
+        if facingForward and dX > 0 then
+            turtle.forward()
+            dX = dX - 1
+        elseif facingForward and dX < 0 then
+            turtle.back()
+            dX = dX + 1
+        elseif not facingForward and dX > 0 then
+            turtle.back()
+            dX = dX - 1
+        elseif not facingForward and dX < 0 then
+            turtle.forward()
+            dX = dX + 1
         end
     end
 
-    if not facingForward then
-        turtle.turnLeft()
-        turtle.turnLeft()
-        facingForward = true
+    -- When facing forwards, left is towards positive Z, right is towards negative Z
+    -- When facing backwards, left is towards negative Z, right is towards positive Z
+    while dZ ~= 0 do
+        if facingForward and dZ > 0 then
+            turtle.left()
+            dZ = dZ - 1
+        elseif facingForward and dZ < 0 then
+            turtle.right()
+            dZ = dZ + 1
+        elseif not facingForward and dZ > 0 then
+            turtle.right()
+            dZ = dZ - 1
+        elseif not facingForward and dZ < 0 then
+            turtle.left()
+            dZ = dZ + 1
+        end
     end
 
-    local finalX, finalY, finalZ = gps.locate(5).round()
+    local finalX, _, finalZ = gps.locate(5)
 
-    if finalX ~= originX or finalY ~= originY or finalZ ~= originZ then
+    if finalX ~= originX or finalZ ~= originZ then
         rednet.send(master, "failed_to_go_to_origin")
-        return
     else
         rednet.send(master, "arrived_at_origin")
     end
