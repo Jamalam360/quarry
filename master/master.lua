@@ -4,6 +4,12 @@ os.loadAPI("output")
 local trash = trash_list.read()
 local turtles = {}
 
+local function handleFailure(msg)
+    output.error(msg)
+    rednet.close("top")
+    sendToAll("master_failure")
+end
+
 if trash == trash_list.NOT_FOUND then
     handleFailure("No trash list found.")
     return
@@ -29,12 +35,6 @@ local function sendToAll(msg)
     for i = 1, #turtles do
         rednet.send(turtles[i], msg)
     end
-end
-
-local function handleFailure(msg)
-    output.error(msg)
-    rednet.close("top")
-    sendToAll("master_failure")
 end
 
 local function network_loop()

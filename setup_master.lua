@@ -1,7 +1,7 @@
 local files = {
-    trash_list = "https://raw.githubusercontent.com/Jamalam/quarry/master/trash_list.lua",
-    output = "https://raw.githubusercontent.com/Jamalam/quarry/master/output.lua",
-    master = "https://raw.githubusercontent.com/Jamalam/quarry/master/master.lua",
+    trash_list = "https://raw.githubusercontent.com/Jamalam360/quarry/main/master/trash_list.lua",
+    output = "https://raw.githubusercontent.com/Jamalam360/quarry/main/master/output.lua",
+    master = "https://raw.githubusercontent.com/Jamalam360/quarry/main/master/master.lua",
 }
 
 for name, url in pairs(files) do

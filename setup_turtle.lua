@@ -1,6 +1,6 @@
 local files = {
-    inventory = "https://raw.githubusercontent.com/Jamalam/quarry/turtle/inventory.lua",
-    turtle = "https://raw.githubusercontent.com/Jamalam/quarry/turtle/turtle.lua",
+    inventory = "https://raw.githubusercontent.com/Jamalam360/quarry/main/turtle/inventory.lua",
+    turtle = "https://raw.githubusercontent.com/Jamalam360/quarry/main/turtle/turtle.lua",
 }
 
 for name, url in pairs(files) do
