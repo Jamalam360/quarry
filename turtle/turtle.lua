@@ -199,6 +199,9 @@ local function network_loop()
             print("Shutting down.")
             writeInfo()
             return
+        elseif packet.type == "return_to_origin" then
+            print("Returning to origin.")
+            go_to_origin()
         end
     end
 end
@@ -285,7 +288,7 @@ local function mining_loop()
                     turtle.digUp()
                     turtle.digDown()
                 end
-                
+
                 progress = 1
                 facingForward = not facingForward
                 rowsDone = rowsDone + 1
