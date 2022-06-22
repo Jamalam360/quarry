@@ -256,7 +256,7 @@ rednet.send(master, "request_trash_list")
 _, msg = rednet.receive()
 
 local t = {}
-for str in string.gmatch(msg, "([^" .. sep .. "]+)") do
+for str in string.gmatch(msg, "([^" .. "," .. "]+)") do
     table.insert(t, str)
 end
 trash = t
