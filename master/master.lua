@@ -6,8 +6,11 @@ local turtles = {}
 
 local function handleFailure(msg)
     output.error(msg)
-    rednet.close("top")
-    sendToAll("master_failure")
+
+    if rednet.isOpen("top") then
+        rednet.close("top")
+        sendToAll("master_failure")
+    end
 end
 
 if trash == trash_list.NOT_FOUND then
@@ -22,7 +25,7 @@ if not rednet.isOpen("top") then
     return
 end
 
-local function removeTurtle(id) 
+local function removeTurtle(id)
     for i, turtle in ipairs(turtles) do
         if turtle.id == id then
             table.remove(turtles, i)
@@ -48,19 +51,19 @@ local function network_loop()
         elseif message == "request_trash_list" then
             rednet.send(id, "request_trash_list_response : " .. trash)
             log(id .. " requested trash list.")
-        elseif message == "inventory_full" then 
+        elseif message == "inventory_full" then
             log(id .. " is returning to its origin to drop off items.")
-        elseif message == "failed_to_go_to_origin" then 
+        elseif message == "failed_to_go_to_origin" then
             log(id .. " failed to go to its origin, shutting down.")
             rednet.send(id, "shutdown")
             removeTurtle(id)
         elseif message == "arrived_at_origin" then
-            log(id .. " arrived at its origin.") 
-        elseif message == "failed_to_unload_items" then 
+            log(id .. " arrived at its origin.")
+        elseif message == "failed_to_unload_items" then
             log(id .. " failed to unload items, shutting down.")
             rednet.send(id, "shutdown")
-        elseif message == "begin_new_layer" then 
-            log (id .. " is beginning a new layer.")
+        elseif message == "begin_new_layer" then
+            log(id .. " is beginning a new layer.")
         elseif message == "try_refuel" then
             log(id .. " is trying to refuel.")
         elseif message == "refuel_success" then
@@ -87,9 +90,9 @@ local function input_loop()
                 end
 
                 sendToAll("update_trash_list")
-            elseif input == "RETURN_ALL" then 
+            elseif input == "RETURN_ALL" then
                 sendToAll("return_to_origin")
-            elseif input == "SHUTDOWN_ALL" then 
+            elseif input == "SHUTDOWN_ALL" then
                 sendToAll("shutdown")
             end
         end
