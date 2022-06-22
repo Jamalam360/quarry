@@ -207,6 +207,10 @@ local function mining_loop()
     local progress = 1
     local rowsDone = 0
 
+    while not turtle.detectDown() do
+        turtle.down()
+    end
+
     while true do
         if turtle.getFuelLevel() == 0 then
             rednet.send(master, "try_refuel")
@@ -258,17 +262,13 @@ local function mining_loop()
             end
         end
 
-        while not turtle.detectDown() do
-            turtle.down()
-        end
-
-        if progress ~= 16 then
+        if progress <= 16 then
             turtle.dig()
             turtle.digDown()
             turtle.digUp()
             turtle.forward()
             progress = progress + 1
-        elseif progress == 16 then
+        elseif progress > 16 then
             if rowsDone ~= 16 then
                 turtle.turnRight()
                 turtle.dig()
