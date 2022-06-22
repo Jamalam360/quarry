@@ -31,9 +31,12 @@ local function writeInfo()
 end
 
 local function go_to_origin()
-    local current = vector.new(gps.locate(5)).round()
-    local target = vector.new(originX, originY, originZ).round()
-    local direction = target.sub(current).round()
+    -- Get the direction to the origin using vector math
+    local direction = {
+        x = originX - gps.locate(5).round().x,
+        y = originY - gps.locate(5).round().y,
+        z = originZ - gps.locate(5).round().z
+    }
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
@@ -84,9 +87,12 @@ local function go_to_origin()
 end
 
 local function go_to_origin_not_y()
-    local current = vector.new(gps.locate(5)).round()
-    local target = vector.new(originX, originY, originZ).round()
-    local direction = target.sub(current).round()
+    -- Get the direction to the origin using vector math
+    local direction = {
+        x = originX - gps.locate(5).round().x,
+        y = originY - gps.locate(5).round().y,
+        z = originZ - gps.locate(5).round().z
+    }
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
@@ -153,7 +159,7 @@ end
 function splitString(str, delimiter)
     local result = {}
     local i = 0
-    for match in (str..delimiter):gmatch("(.-)"..delimiter) do
+    for match in (str .. delimiter):gmatch("(.-)" .. delimiter) do
         i = i + 1
         result[i] = match
     end
@@ -285,7 +291,7 @@ end
 
 rednet.broadcast("initial_handshake")
 
-while true do 
+while true do
     local _, _, message = os.pullEvent("rednet_message")
     local packet = get_packet_info(message)
 
