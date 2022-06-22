@@ -53,7 +53,7 @@ local function network_loop()
             table.insert(turtles, "initial_handshake_response : ")
             log(id .. " connected to master.")
         elseif message == "request_trash_list" then
-            rednet.send(id, "request_trash_list_response : " .. trash)
+            rednet.send(id, "request_trash_list_response : " .. table.concat(trash, ","))
             log(id .. " requested trash list.")
         elseif message == "inventory_full" then
             log(id .. " is returning to its origin to drop off items.")

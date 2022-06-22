@@ -164,7 +164,7 @@ local function mining_loop()
     while true do
         if turtle.getFuelLevel() == 0 then
             rednet.send(master, "try_refuel")
-            
+
             if selectItem("minecraft:coal") then
                 turtle.refuel(turtle.getItemCount())
                 rednet.send(master, "refuel_success")
@@ -254,7 +254,13 @@ master = id
 
 rednet.send(master, "request_trash_list")
 _, msg = rednet.receive()
-trash = msg
+
+local t = {}
+for str in string.gmatch(msg, "([^" .. sep .. "]+)") do
+    table.insert(t, str)
+end
+trash = t
+
 
 go_to_origin()
 
