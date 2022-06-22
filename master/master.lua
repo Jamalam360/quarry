@@ -50,7 +50,7 @@ local function network_loop()
 
         if message == "initial_handshake" then
             rednet.send(id, os.getComputerID())
-            table.insert(turtles, "initial_handshake_response : success")
+            table.insert(turtles, "initial_handshake_response : " .. os.getComputerID())
             log(id .. " connected to master.")
         elseif message == "request_trash_list" then
             rednet.send(id, "request_trash_list_response : " .. table.concat(trash, ","))

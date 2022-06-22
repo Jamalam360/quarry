@@ -271,11 +271,11 @@ end
 rednet.broadcast("initial_handshake")
 
 while true do 
-    local _, id, message = os.pullEvent("rednet_message")
+    local _, _, message = os.pullEvent("rednet_message")
     local packet = get_packet_info(message)
 
     if packet.type == "initial_handshake_response" then
-        master = id
+        master = tonumber(packet.data)
         break
     end
 end
