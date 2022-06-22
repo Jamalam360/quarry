@@ -30,6 +30,10 @@ local function writeInfo()
     file.close()
 end
 
+local function roundVector(v)
+    return vector.new(math.floor(v.x + 0.5), math.floor(v.y + 0.5), math.floor(v.z + 0.5))
+end
+
 local function go_to_origin()
     local current = roundVector(vector.new(gps.locate(5)))
     local target = roundVector(vector.new(originX, originY, originZ))
@@ -81,10 +85,6 @@ local function go_to_origin()
     else
         rednet.send(master, "arrived_at_origin")
     end
-end
-
-local function roundVector(v)
-    return vector.new(math.floor(v.x + 0.5), math.floor(v.y + 0.5), math.floor(v.z + 0.5))
 end
 
 local function go_to_origin_not_y()
