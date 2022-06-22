@@ -33,12 +33,15 @@ end
 local function go_to_origin()
     -- Get the direction to the origin using vector math
     local current = vector.new(gps.locate(5))
-    print("Current: " .. current.x .. "," .. current.y .. "," .. current.z)
     local origin = vector.new(originX, originY, originZ)
-    print("Origin: " .. origin.x .. "," .. origin.y .. "," .. origin.z)
+
+    if current.x == origin.x and current.y == origin.y and current.z == origin.z then
+        rednet.send(master, "arrived_at_origin")
+        return
+    end
+
     local direction = vector.new(current.x - origin.x, current.y - origin.y, current.z - origin.z)
     direction = direction.round()
-    print("Direction: " .. direction.x .. "," .. direction.y .. "," .. direction.z)
 
     -- Move to the target using direction.x, direction.y, direction.z
     -- Forward is towards negative X
@@ -80,9 +83,6 @@ local function go_to_origin()
 
     if finalX ~= originX or finalY ~= originY or finalZ ~= originZ then
         rednet.send(master, "failed_to_go_to_origin")
-        print("Origin: " .. originX .. "," .. originY .. "," .. originZ)
-        print("Final: " .. finalX .. "," .. finalY .. "," .. finalZ)
-        return
     else
         rednet.send(master, "arrived_at_origin")
     end
@@ -92,6 +92,12 @@ local function go_to_origin_not_y()
     -- Get the direction to the origin using vector math
     local current = vector.new(gps.locate(5))
     local origin = vector.new(originX, originY, originZ)
+
+    if current.x == origin.x and current.y == origin.y and current.z == origin.z then
+        rednet.send(master, "arrived_at_origin")
+        return
+    end
+
     local direction = vector.new(current.x - origin.x, current.y - origin.y, current.z - origin.z)
     direction = direction.round()
 
@@ -149,8 +155,6 @@ local function go_to_origin_not_y()
 
     if finalX ~= originX or finalY ~= originY or finalZ ~= originZ then
         rednet.send(master, "failed_to_go_to_origin")
-        print("Origin: " .. originX .. "," .. originY .. "," .. originZ)
-        print("Final: " .. finalX .. "," .. finalY .. "," .. finalZ)
         return
     else
         rednet.send(master, "arrived_at_origin")
