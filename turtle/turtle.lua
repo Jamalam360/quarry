@@ -272,6 +272,8 @@ local function mining_loop()
         elseif progress == 16 then
             if rowsDone ~= 16 then
                 if facingForward then
+                    turtle.digDown()
+                    turtle.digUp()
                     turtle.turnRight()
                     turtle.dig()
                     turtle.forward()
@@ -281,6 +283,8 @@ local function mining_loop()
                     turtle.digUp()
                     turtle.digDown()
                 else
+                    turtle.digDown()
+                    turtle.digUp()
                     turtle.turnLeft()
                     turtle.dig()
                     turtle.forward()
@@ -326,6 +330,8 @@ _, msg = rednet.receive()
 trash = splitString(msg, ",")
 
 go_to_origin()
+
+writeInfo()
 
 parallel.waitForAny(network_loop, mining_loop)
 
