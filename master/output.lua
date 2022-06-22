@@ -3,6 +3,8 @@ local monitor = peripheral.wrap("right")
 local width, height = monitor.getSize()
 local y = 1
 
+monitor.clear()
+
 local function checkY() 
     if y > height then
         y = 1
