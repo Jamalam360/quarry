@@ -87,7 +87,7 @@ function dropTrash(trash)
         details = turtle.getItemDetail(i)
         if details then
             for j=1, #trash do
-                if details.name == thash[j] then
+                if details.name == trash[j] then
                     turtle.select(i)
                     turtle.drop()
                 end
