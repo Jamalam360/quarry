@@ -296,7 +296,7 @@ local function mining_loop()
                 rowsDone = rowsDone + 1
             elseif rowsDone == 16 then
                 rednet.send(master, "begin_new_layer")
-                go_to_origin_not_y()
+                go_to_origin_ignoring_y()
                 turtle.down()
                 turtle.digDown()
                 turtle.down()
